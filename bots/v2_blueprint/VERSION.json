@@ -1,0 +1,6 @@
+{
+ "name": "v2_blueprint",
+ "note": "MCCFR blueprint 1.8B iters (60/96/96/64 buckets), no exploitation",
+ "commit": "c83ab6e-dirty",
+ "time": "2026-11-07 22:50:01"
+}

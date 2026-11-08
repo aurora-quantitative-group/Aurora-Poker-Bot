@@ -1,3 +1,74 @@
+# PLO5-MCCFR — a heads-up Short Deck PLO5 agent
+
+`agent.py` (unchanged server plumbing) delegates to the `plo5bot/` engine:
+
+* **C hand evaluator** (`plo5bot/csrc/plo5core.c`, prebuilt `plo5bot/libplo5core.so`): exact
+  referee ordering, ~60 ns per Omaha hand; automatic numpy fallback if the library cannot load.
+* **MCCFR blueprint** (external sampling, linear weighting, regret pruning) on the **exact**
+  15,952-node betting tree with card buckets (60/96/96/64), 1.8B iterations.
+* **Opponent model + 7 Restricted-Nash-Response counter-strategies**, switched in only when the
+  opponent statistically fits an archetype (G-test), with probation and a loss-triggered ban.
+* **Feedback time manager**: ~2-3 s of the 8 s bank per half over real HTTP; never errors.
+
+Results (unseen seeds, 4,000-6,000 paired deals each): beats the supplied baselines by +7.8 to
++15.4 bb/deal, five independent heuristic bots by +0.5 to +2.4 bb/deal, and the previous
+versions by +0.46-0.50 bb/deal. Details: [docs/BENCHMARKS.md](docs/BENCHMARKS.md).
+Design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Run and test (Linux / WSL, Python 3.12)
+
+```
+pip install -r requirements-dev.txt
+python -m pytest -q                         # 34 tests: tournament plumbing, evaluator (exhaustive),
+                                            # betting tree vs game.py, player behaviour, fallback
+PLO5_FORCE_NUMPY=1 python -m pytest -q      # same suite on the numpy fallback backend
+python agent.py                             # serve on $PORT (default 5008)
+```
+
+## Benchmark
+
+```
+# duplicate matches, each half in a fresh process, paired-deal 95% CI; logs to experiments/
+python tools/arena.py agent.py bots/v2_blueprint/agent.py --seeds 1-8 --deals 1000 --jobs 8
+python tools/bench_suite.py agent.py --seeds 21-24 --jobs 4 --tag my-change   # whole opponent pool
+python tools/snapshot.py v4_name "what changed"     # freeze a version under bots/ for regressions
+```
+Opponents: `baseline-bots/*`, `bots/opponents/*` (independent heuristics), `bots/v*/` (frozen
+versions of this bot). Arena env overrides: `"agent.py?PLO5_EXPLOIT=0&PLO5_MODE=heuristic"`.
+Rule used here: never replace a version without a paired comparison on unseen seeds.
+
+## Retrain (≈ 30 min on 12 cores; artifacts in `train/data/`, not committed)
+
+```
+bash plo5bot/csrc/build.sh                                  # rebuild the .so (gcc, x86-64)
+python train/build_preflop.py --runouts 40000               # plo5bot/data/preflop_eq.npy
+python train/gen_dataset.py --deals 4000000                 # buckets + plo5bot/data/abstraction.npz
+python train/train_blueprint.py --iters 1800000000          # plo5bot/data/blueprint.npz
+python train/train_rnr.py --iters 150000000                 # plo5bot/data/models.npz
+python train/eval_abstract.py plo5bot/data/blueprint.npz    # abstract-game BR (diagnostic only)
+```
+Changing the abstraction requires regenerating the dataset, blueprint and models together.
+
+## Runtime switches (environment)
+
+| variable | default | meaning |
+|---|---|---|
+| `PLO5_EXPLOIT` | `1` | `0` = pure blueprint |
+| `PLO5_BUDGET` | `5.0` | projected charged seconds per half the time manager aims for |
+| `PLO5_FORCE_NUMPY` | unset | ignore the C library (tests the fallback) |
+| `PLO5_DETERMINISTIC` | unset | fixed sample sizes, for reproducible tests |
+| `PLO5_MIN_OBS`, `PLO5_CONFIDENCE`, `PLO5_FIT_SLACK`, `PLO5_PROBATION_FLOOR` | 40, 0.9, 0.05, 1.0 | opponent-model gates |
+
+## Not verified
+
+* `tools/check_build.sh` (Docker) was **not** run — Docker is not available on the development
+  machine. The `.so` only needs GLIBC 2.2.5/2.14 symbols and the agent falls back to numpy if it
+  does not load, but run the Docker check before submitting.
+* Strength against the real tournament field is unknown; see the limits in
+  [docs/BENCHMARKS.md](docs/BENCHMARKS.md).
+
+---
+
 # Short Deck PLO5 Bot Tournament: Participant Bundle
 
 Your bot is **one file, `agent.py`**. It is a complete FastAPI HTTP web server. You edit one marked section, and the tournament runs the file as-is.

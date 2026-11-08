@@ -1,0 +1,6 @@
+{
+ "name": "v3_rnr",
+ "note": "blueprint 1.8B + opponent model (G-test gate, probation, perf ban) + 7 RNR counter-strategies",
+ "commit": "c83ab6e-dirty",
+ "time": "2026-11-08 00:27:25"
+}

@@ -1,0 +1,6 @@
+{
+ "name": "v1_heuristic",
+ "note": "equity/pot-odds heuristic, C evaluator",
+ "commit": "c83ab6e-dirty",
+ "time": "2026-11-07 22:26:48"
+}

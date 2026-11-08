@@ -1,0 +1,6 @@
+{
+ "name": "v3b_final",
+ "note": "v3 + feedback time manager (process CPU), vectorised numpy fallback, model re-selection every 10 hands",
+ "commit": "c83ab6e-dirty",
+ "time": "2026-11-08 00:53:31"
+}

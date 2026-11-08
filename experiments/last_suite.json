@@ -1,0 +1,1262 @@
+[
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "baseline-bots/baseline_random.py",
+  "names": [
+   "PLO5-MCCFR",
+   "RandomBot"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 2.1264,
+  "bb_per_100_hands": 106.32,
+  "std_bb": 13.65,
+  "stderr": 0.2158,
+  "ci95": [
+   1.7033,
+   2.5494
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 4
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 1.863,
+    "ci": [
+     1.0131,
+     2.7129
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 1.7165,
+    "ci": [
+     0.9154,
+     2.5176
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 2.4795,
+    "ci": [
+     1.6051,
+     3.3539
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 2.4465,
+    "ci": [
+     1.5891,
+     3.3039
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 1.4255,
+   "big_blind": 0.7009
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    -2.017,
+    1835
+   ],
+   "preflop": [
+    -0.227,
+    4166
+   ],
+   "river": [
+    0.303,
+    380
+   ],
+   "showdown": [
+    15.998,
+    869
+   ],
+   "turn": [
+    -1.155,
+    750
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 5490,
+   "0:FOLD": 2810,
+   "0:RAISE_HALF": 554,
+   "0:RAISE_POT": 550,
+   "1:CHECK_CALL": 2727,
+   "1:FOLD": 1683,
+   "1:RAISE_HALF": 393,
+   "1:RAISE_POT": 183,
+   "2:CHECK_CALL": 1416,
+   "2:FOLD": 634,
+   "2:RAISE_HALF": 270,
+   "2:RAISE_POT": 161,
+   "3:CHECK_CALL": 745,
+   "3:FOLD": 293,
+   "3:RAISE_HALF": 167,
+   "3:RAISE_POT": 109
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.559,
+   "max": 0.582
+  },
+  "agent1_calls_per_half": 2277.1,
+  "agent1_max_decision_s": 0.0055,
+  "agent2_think_s_per_half": {
+   "mean": 0.089,
+   "max": 0.093
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 2281,
+    "time": 0.42838566502541653,
+    "max_time": 0.0011496669994812692,
+    "feature_calls": 1718,
+    "cache_hits": 563,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 14.9,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 00:59:22"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "baseline-bots/baseline_calling_station.py",
+  "names": [
+   "PLO5-MCCFR",
+   "CallingStation"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 4.4352,
+  "bb_per_100_hands": 221.76,
+  "std_bb": 8.944,
+  "stderr": 0.1414,
+  "ci95": [
+   4.1581,
+   4.7124
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 4
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 4.579,
+    "ci": [
+     4.0165,
+     5.1415
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 3.819,
+    "ci": [
+     3.3127,
+     4.3253
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 4.9625,
+    "ci": [
+     4.3805,
+     5.5445
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 4.3805,
+    "ci": [
+     3.8182,
+     4.9428
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 2.0278,
+   "big_blind": 2.4075
+  },
+  "by_end_street_bb_per_hand": {
+   "preflop": [
+    -0.5,
+    684
+   ],
+   "showdown": [
+    2.472,
+    7316
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 5747,
+   "0:FOLD": 684,
+   "0:RAISE_HALF": 995,
+   "0:RAISE_POT": 574,
+   "1:CHECK_CALL": 5840,
+   "1:RAISE_HALF": 1017,
+   "1:RAISE_POT": 459,
+   "2:CHECK_CALL": 5360,
+   "2:RAISE_HALF": 1281,
+   "2:RAISE_POT": 675,
+   "3:CHECK_CALL": 4698,
+   "3:RAISE_HALF": 1694,
+   "3:RAISE_POT": 924
+  },
+  "agent1_think_s_per_half": {
+   "mean": 1.214,
+   "max": 1.237
+  },
+  "agent1_calls_per_half": 3747.5,
+  "agent1_max_decision_s": 0.0051,
+  "agent2_think_s_per_half": {
+   "mean": 0.173,
+   "max": 0.179
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 3700,
+    "time": 0.9300953149886482,
+    "max_time": 0.0019522999991750112,
+    "feature_calls": 3700,
+    "cache_hits": 0,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 19.5,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 00:59:43"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "baseline-bots/baseline_always_pot.py",
+  "names": [
+   "PLO5-MCCFR",
+   "AlwaysPot"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 1.7172,
+  "bb_per_100_hands": 85.86,
+  "std_bb": 19.628,
+  "stderr": 0.3103,
+  "ci95": [
+   1.109,
+   2.3255
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 3,
+   "CHOP": 1
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 2.286,
+    "ci": [
+     1.0747,
+     3.4973
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 0.603,
+    "ci": [
+     -0.5753,
+     1.7813
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 2.5685,
+    "ci": [
+     1.3065,
+     3.8305
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 1.4115,
+    "ci": [
+     0.2004,
+     2.6226
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 1.1518,
+   "big_blind": 0.5655
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    -3.999,
+    1987
+   ],
+   "preflop": [
+    -0.928,
+    4763
+   ],
+   "river": [
+    -27.0,
+    26
+   ],
+   "showdown": [
+    20.377,
+    1062
+   ],
+   "turn": [
+    -10.5,
+    162
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 5882,
+   "0:FOLD": 4763,
+   "0:RAISE_HALF": 486,
+   "0:RAISE_POT": 739,
+   "1:CHECK_CALL": 1909,
+   "1:FOLD": 1987,
+   "1:RAISE_HALF": 260,
+   "1:RAISE_POT": 141,
+   "2:CHECK_CALL": 623,
+   "2:FOLD": 162,
+   "2:RAISE_HALF": 103,
+   "2:RAISE_POT": 59,
+   "3:CHECK_CALL": 218,
+   "3:FOLD": 26,
+   "3:RAISE_HALF": 9,
+   "3:RAISE_POT": 5
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.432,
+   "max": 0.458
+  },
+  "agent1_calls_per_half": 2175.5,
+  "agent1_max_decision_s": 0.0032,
+  "agent2_think_s_per_half": {
+   "mean": 0.067,
+   "max": 0.069
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 2181,
+    "time": 0.30247890800092136,
+    "max_time": 0.0011578320008993614,
+    "feature_calls": 1475,
+    "cache_hits": 706,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 14.2,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 00:59:57"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "baseline-bots/baseline_always_half.py",
+  "names": [
+   "PLO5-MCCFR",
+   "AlwaysHalf"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 1.3555,
+  "bb_per_100_hands": 67.77,
+  "std_bb": 17.815,
+  "stderr": 0.2817,
+  "ci95": [
+   0.8034,
+   1.9076
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 3,
+   "CHOP": 1
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 1.515,
+    "ci": [
+     0.425,
+     2.605
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 0.175,
+    "ci": [
+     -0.877,
+     1.227
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 1.8525,
+    "ci": [
+     0.6984,
+     3.0066
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 1.8795,
+    "ci": [
+     0.763,
+     2.996
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 0.4455,
+   "big_blind": 0.91
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    -4.354,
+    2642
+   ],
+   "preflop": [
+    -0.913,
+    3928
+   ],
+   "river": [
+    -11.171,
+    164
+   ],
+   "showdown": [
+    24.179,
+    981
+   ],
+   "turn": [
+    -4.828,
+    285
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 6717,
+   "0:FOLD": 3928,
+   "0:RAISE_HALF": 466,
+   "0:RAISE_POT": 759,
+   "1:CHECK_CALL": 3008,
+   "1:FOLD": 2642,
+   "1:RAISE_HALF": 355,
+   "1:RAISE_POT": 172,
+   "2:CHECK_CALL": 1146,
+   "2:FOLD": 285,
+   "2:RAISE_HALF": 166,
+   "2:RAISE_POT": 102,
+   "3:CHECK_CALL": 602,
+   "3:FOLD": 164,
+   "3:RAISE_HALF": 113,
+   "3:RAISE_POT": 78
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.543,
+   "max": 0.567
+  },
+  "agent1_calls_per_half": 2591.9,
+  "agent1_max_decision_s": 0.0037,
+  "agent2_think_s_per_half": {
+   "mean": 0.076,
+   "max": 0.08
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 2597,
+    "time": 0.4116849979509425,
+    "max_time": 0.0022587660005228827,
+    "feature_calls": 1736,
+    "cache_hits": 861,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 14.7,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 01:00:12"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "bots/opponents/check_fold.py",
+  "names": [
+   "PLO5-MCCFR",
+   "CheckFold"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 0.7275,
+  "bb_per_100_hands": 36.38,
+  "std_bb": 0.891,
+  "stderr": 0.0141,
+  "ci95": [
+   0.6999,
+   0.7551
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 4
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 0.712,
+    "ci": [
+     0.6567,
+     0.7673
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 0.725,
+    "ci": [
+     0.6697,
+     0.7803
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 0.7645,
+    "ci": [
+     0.7094,
+     0.8196
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 0.7085,
+    "ci": [
+     0.6533,
+     0.7637
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 0.2275,
+   "big_blind": 0.5
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    1.0,
+    569
+   ],
+   "preflop": [
+    0.414,
+    5160
+   ],
+   "river": [
+    1.0,
+    378
+   ],
+   "showdown": [
+    -0.348,
+    1531
+   ],
+   "turn": [
+    1.0,
+    362
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 2840,
+   "0:FOLD": 684,
+   "0:RAISE_HALF": 189,
+   "0:RAISE_POT": 287,
+   "1:CHECK_CALL": 2271,
+   "1:RAISE_HALF": 398,
+   "1:RAISE_POT": 171,
+   "2:CHECK_CALL": 1909,
+   "2:RAISE_HALF": 264,
+   "2:RAISE_POT": 98,
+   "3:CHECK_CALL": 1531,
+   "3:RAISE_HALF": 270,
+   "3:RAISE_POT": 108
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.488,
+   "max": 0.56
+  },
+  "agent1_calls_per_half": 1381.5,
+  "agent1_max_decision_s": 0.0072,
+  "agent2_think_s_per_half": {
+   "mean": 0.086,
+   "max": 0.103
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 1356,
+    "time": 0.3932921840059862,
+    "max_time": 0.0018933909996121656,
+    "feature_calls": 1356,
+    "cache_hits": 0,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 14.4,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 01:00:27"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "bots/opponents/heuristic_tag.py",
+  "names": [
+   "PLO5-MCCFR",
+   "HeuristicTAG"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 0.0295,
+  "bb_per_100_hands": 1.47,
+  "std_bb": 3.082,
+  "stderr": 0.0487,
+  "ci95": [
+   -0.066,
+   0.125
+  ],
+  "verdict": "NOT_SIGNIFICANT",
+  "seed_verdicts": {
+   "CHOP": 4
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 0.106,
+    "ci": [
+     -0.0633,
+     0.2753
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 0.027,
+    "ci": [
+     -0.1687,
+     0.2227
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 0.016,
+    "ci": [
+     -0.177,
+     0.209
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": -0.031,
+    "ci": [
+     -0.2356,
+     0.1736
+    ],
+    "verdict": "CHOP"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 0.111,
+   "big_blind": -0.0815
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    -0.001,
+    1334
+   ],
+   "preflop": [
+    0.003,
+    2751
+   ],
+   "river": [
+    0.134,
+    886
+   ],
+   "showdown": [
+    -0.028,
+    2088
+   ],
+   "turn": [
+    0.055,
+    941
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 5457,
+   "0:FOLD": 1372,
+   "0:RAISE_HALF": 760,
+   "0:RAISE_POT": 556,
+   "1:CHECK_CALL": 4075,
+   "1:FOLD": 665,
+   "1:RAISE_HALF": 673,
+   "1:RAISE_POT": 273,
+   "2:CHECK_CALL": 3007,
+   "2:FOLD": 460,
+   "2:RAISE_HALF": 537,
+   "2:RAISE_POT": 210,
+   "3:CHECK_CALL": 2128,
+   "3:FOLD": 434,
+   "3:RAISE_HALF": 497,
+   "3:RAISE_POT": 218
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.776,
+   "max": 0.8
+  },
+  "agent1_calls_per_half": 2669.2,
+  "agent1_max_decision_s": 0.0038,
+  "agent2_think_s_per_half": {
+   "mean": 0.372,
+   "max": 0.377
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 2685,
+    "time": 0.6258685160210007,
+    "max_time": 0.003544589999364689,
+    "feature_calls": 2443,
+    "cache_hits": 242,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 16.7,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 01:00:45"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "bots/opponents/heuristic_lag.py",
+  "names": [
+   "PLO5-MCCFR",
+   "HeuristicLAG"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": -0.178,
+  "bb_per_100_hands": -8.9,
+  "std_bb": 3.092,
+  "stderr": 0.0489,
+  "ci95": [
+   -0.2738,
+   -0.0822
+  ],
+  "verdict": "AGENT2_BETTER",
+  "seed_verdicts": {
+   "CHOP": 3,
+   "LOSS": 1
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": -0.105,
+    "ci": [
+     -0.2897,
+     0.0797
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": -0.347,
+    "ci": [
+     -0.5591,
+     -0.1349
+    ],
+    "verdict": "LOSS"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": -0.141,
+    "ci": [
+     -0.3477,
+     0.0657
+    ],
+    "verdict": "CHOP"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": -0.119,
+    "ci": [
+     -0.2774,
+     0.0394
+    ],
+    "verdict": "CHOP"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": -0.0077,
+   "big_blind": -0.1703
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    -0.323,
+    1552
+   ],
+   "preflop": [
+    -0.088,
+    3081
+   ],
+   "river": [
+    -0.329,
+    853
+   ],
+   "showdown": [
+    0.438,
+    1510
+   ],
+   "turn": [
+    -0.319,
+    1004
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 5639,
+   "0:FOLD": 1676,
+   "0:RAISE_HALF": 765,
+   "0:RAISE_POT": 566,
+   "1:CHECK_CALL": 3765,
+   "1:FOLD": 950,
+   "1:RAISE_HALF": 618,
+   "1:RAISE_POT": 230,
+   "2:CHECK_CALL": 2583,
+   "2:FOLD": 598,
+   "2:RAISE_HALF": 400,
+   "2:RAISE_POT": 198,
+   "3:CHECK_CALL": 1664,
+   "3:FOLD": 519,
+   "3:RAISE_HALF": 348,
+   "3:RAISE_POT": 177
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.726,
+   "max": 0.781
+  },
+  "agent1_calls_per_half": 2591.0,
+  "agent1_max_decision_s": 0.0058,
+  "agent2_think_s_per_half": {
+   "mean": 0.345,
+   "max": 0.362
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 2658,
+    "time": 0.5536019660339662,
+    "max_time": 0.0011010340003849706,
+    "feature_calls": 2282,
+    "cache_hits": 376,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 16.3,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 01:01:02"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "bots/opponents/heuristic_nit.py",
+  "names": [
+   "PLO5-MCCFR",
+   "HeuristicNit"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 0.3115,
+  "bb_per_100_hands": 15.57,
+  "std_bb": 2.634,
+  "stderr": 0.0416,
+  "ci95": [
+   0.2299,
+   0.3931
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 4
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 0.1935,
+    "ci": [
+     0.0203,
+     0.3667
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 0.317,
+    "ci": [
+     0.1364,
+     0.4976
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 0.329,
+    "ci": [
+     0.1841,
+     0.4739
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 0.4065,
+    "ci": [
+     0.2549,
+     0.5581
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 0.1168,
+   "big_blind": 0.1948
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    0.699,
+    944
+   ],
+   "preflop": [
+    0.301,
+    3116
+   ],
+   "river": [
+    0.388,
+    776
+   ],
+   "showdown": [
+    -0.404,
+    2446
+   ],
+   "turn": [
+    0.467,
+    718
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 4746,
+   "0:FOLD": 893,
+   "0:RAISE_HALF": 659,
+   "0:RAISE_POT": 498,
+   "1:CHECK_CALL": 3897,
+   "1:FOLD": 222,
+   "1:RAISE_HALF": 651,
+   "1:RAISE_POT": 258,
+   "2:CHECK_CALL": 3144,
+   "2:FOLD": 233,
+   "2:RAISE_HALF": 514,
+   "2:RAISE_POT": 183,
+   "3:CHECK_CALL": 2367,
+   "3:FOLD": 272,
+   "3:RAISE_HALF": 494,
+   "3:RAISE_POT": 243
+  },
+  "agent1_think_s_per_half": {
+   "mean": 0.74,
+   "max": 0.774
+  },
+  "agent1_calls_per_half": 2413.2,
+  "agent1_max_decision_s": 0.005,
+  "agent2_think_s_per_half": {
+   "mean": 0.375,
+   "max": 0.403
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 2373,
+    "time": 0.5730562439348432,
+    "max_time": 0.002599442001155694,
+    "feature_calls": 2279,
+    "cache_hits": 94,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 16.4,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 01:01:19"
+ },
+ {
+  "agent1": "bots/v1_heuristic/agent.py",
+  "agent2": "bots/opponents/pot_odds_caller.py",
+  "names": [
+   "PLO5-MCCFR",
+   "PotOddsCaller"
+  ],
+  "seeds": [
+   "arena-21",
+   "arena-22",
+   "arena-23",
+   "arena-24"
+  ],
+  "deals_per_half": 1000,
+  "total_deals": 4000,
+  "mean_bb_per_deal": 1.7043,
+  "bb_per_100_hands": 85.21,
+  "std_bb": 5.729,
+  "stderr": 0.0906,
+  "ci95": [
+   1.5267,
+   1.8818
+  ],
+  "verdict": "AGENT1_BETTER",
+  "seed_verdicts": {
+   "WIN": 4
+  },
+  "per_seed": [
+   {
+    "seed": "arena-21",
+    "mean_bb_per_deal": 1.905,
+    "ci": [
+     1.5299,
+     2.2801
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-22",
+    "mean_bb_per_deal": 1.553,
+    "ci": [
+     1.2343,
+     1.8717
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-23",
+    "mean_bb_per_deal": 1.8005,
+    "ci": [
+     1.422,
+     2.179
+    ],
+    "verdict": "WIN"
+   },
+   {
+    "seed": "arena-24",
+    "mean_bb_per_deal": 1.5585,
+    "ci": [
+     1.2139,
+     1.9031
+    ],
+    "verdict": "WIN"
+   }
+  ],
+  "by_position_bb_per_hand": {
+   "button": 0.7825,
+   "big_blind": 0.9217
+  },
+  "by_end_street_bb_per_hand": {
+   "flop": [
+    1.257,
+    300
+   ],
+   "preflop": [
+    0.12,
+    1166
+   ],
+   "river": [
+    2.36,
+    470
+   ],
+   "showdown": [
+    0.789,
+    5677
+   ],
+   "turn": [
+    1.837,
+    387
+   ]
+  },
+  "agent1_action_freq": {
+   "0:CHECK_CALL": 5741,
+   "0:FOLD": 684,
+   "0:RAISE_HALF": 989,
+   "0:RAISE_POT": 586,
+   "1:CHECK_CALL": 5486,
+   "1:RAISE_HALF": 959,
+   "1:RAISE_POT": 389,
+   "2:CHECK_CALL": 4962,
+   "2:RAISE_HALF": 1055,
+   "2:RAISE_POT": 517,
+   "3:CHECK_CALL": 4280,
+   "3:RAISE_HALF": 1206,
+   "3:RAISE_POT": 661
+  },
+  "agent1_think_s_per_half": {
+   "mean": 1.253,
+   "max": 1.404
+  },
+  "agent1_calls_per_half": 3443.4,
+  "agent1_max_decision_s": 0.0097,
+  "agent2_think_s_per_half": {
+   "mean": 0.562,
+   "max": 0.619
+  },
+  "errors": [
+   0,
+   0
+  ],
+  "agent1_stats_sample": [
+   {
+    "decisions": 3422,
+    "time": 0.8877330890136363,
+    "max_time": 0.001998198000364937,
+    "feature_calls": 3422,
+    "cache_hits": 0,
+    "fallbacks": 0,
+    "exceptions": 0,
+    "backend": "c",
+    "mode": "heuristic",
+    "exploit_adjusted": 0
+   }
+  ],
+  "wall_s": 20.2,
+  "commit": "c83ab6e-dirty",
+  "tag": "v1-ablation",
+  "time": "2026-11-08 01:01:40"
+ }
+]

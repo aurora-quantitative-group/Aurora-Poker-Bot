@@ -1,0 +1,14 @@
+# Only what the bot needs at match time goes into the image.
+.git
+**/__pycache__
+.pytest_cache
+train/
+bots/
+experiments/
+tests/
+docs/
+tools/
+baseline-bots/
+plo5bot/csrc/
+test_agent.py
+*.md

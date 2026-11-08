@@ -1,0 +1,201 @@
+"""
+plo5bot.player - the runtime decision engine called from agent.py.
+
+Per decision:
+  1. replay obs.action_history through the exact betting tree -> node
+     (the game has no off-tree actions, so this always succeeds)
+  2. compute this street's hand features / bucket (cached per hand+street)
+  3. read the MCCFR blueprint strategy for (node, bucket)
+  4. let the opponent model adjust it (plo5bot.exploit) when there is
+     enough evidence
+  5. sample an action with a per-half seeded RNG (reproducible mixing)
+Everything is guarded: any exception or an exhausted time budget falls back
+to a cheap legal action, so the bot can never crash or time out.
+
+Per-half state lives in `memory` (wiped by the server every half). The
+Player object holds only read-only tables loaded at startup.
+"""
+
+from __future__ import annotations
+
+import os
+import random
+import time
+
+from game import Action
+
+from . import abstraction as A
+from . import core
+from .blueprint import try_load
+from .heuristic import heuristic_action
+from .tree import get_tree
+
+TIME_BANK = 8.0
+# Our own compute target per half (the remainder is margin for slower
+# tournament hardware and for request overhead beyond the 1 ms grace).
+TARGET = float(os.environ.get("PLO5_BUDGET", "5.0"))   # projected charged seconds per half
+TARGET_NP = min(TARGET, 3.5)   # numpy fallback: per-request costs are higher, keep more margin
+HARD_LIMIT = 6.5
+# PLO5_DETERMINISTIC=1 fixes the sample scale so play depends only on the
+# seeds (reproducible mixing for tests); never set in the tournament.
+DETERMINISTIC = os.environ.get("PLO5_DETERMINISTIC") == "1"   # estimated charged seconds after which we only check/fold (judge stops us at 8)
+GRACE = 0.0009     # the judge does not charge the first 1 ms of each request (keep a margin)
+SCALES_C = (1.0, 0.5, 0.25)        # C backend: ~0.3 ms of features per hand at 1.0
+SCALES_NP = (0.16, 0.08, 0.04)     # numpy fallback: ~2 ms per hand at 0.16
+
+
+class Player:
+    def __init__(self, blueprint_path: str | None = None, use_exploit: bool | None = None):
+        self.tree = get_tree()
+        A.preflop_table()
+        self.abs = A.load_abstraction()
+        self.bp = try_load(blueprint_path or os.environ.get("PLO5_BLUEPRINT"))
+        if use_exploit is None:
+            use_exploit = os.environ.get("PLO5_EXPLOIT", "1") == "1"
+        self.use_exploit = use_exploit
+        self.mode = os.environ.get("PLO5_MODE", "blueprint" if self.bp is not None else "heuristic")
+        # warm caches / code paths so the first decision is not slow
+        A.features([0, 5, 10, 15, 20], [1, 6, 11])
+        A.features([0, 5, 10, 15, 20], [1, 6, 11, 16, 21])
+        if self.use_exploit:
+            from . import exploit
+            exploit.load_models()          # load counter-strategy tables now, not on the first decision
+            self.exploit = exploit
+        else:
+            self.exploit = None
+
+    # ------------------------------------------------------------------ API
+    def new_half(self, config, memory: dict) -> None:
+        memory["rng"] = random.Random(int(os.environ.get("PLO5_SEED", "20261107")))
+        memory["cache"] = {}            # (hand_index, street) -> (e, e2, bucket)
+        memory["hand"] = -1
+        memory["num_hands"] = getattr(config, "num_hands", 1000)
+        memory["_cpu0"] = time.process_time()
+        memory["_level"] = 0
+        memory["_scale_hand"] = -1
+        memory["_stats"] = {"decisions": 0, "time": 0.0, "max_time": 0.0, "feature_calls": 0,
+                            "cache_hits": 0, "fallbacks": 0, "exceptions": 0, "backend": core.BACKEND,
+                            "mode": self.mode, "exploit_adjusted": 0}
+        if self.exploit is not None:
+            memory["opp"] = self.exploit.new_model()
+
+    def on_hand_end(self, result, memory: dict) -> None:
+        if self.exploit is not None and "opp" in memory:
+            t0 = time.perf_counter()
+            try:
+                self.exploit.observe_result(memory["opp"], result, memory)
+            except Exception:
+                memory["_stats"]["exceptions"] += 1
+            memory["_stats"]["time"] += time.perf_counter() - t0   # charged by the judge too
+
+    def choose_action(self, obs, memory: dict) -> Action:
+        t0 = time.perf_counter()
+        st = memory["_stats"]
+        try:
+            action = self._decide(obs, memory, st)
+            if action not in obs.legal_actions:
+                st["fallbacks"] += 1
+                action = Action.CHECK_CALL
+        except Exception:
+            st["exceptions"] += 1
+            action = Action.CHECK_CALL if Action.CHECK_CALL in obs.legal_actions else obs.legal_actions[0]
+        if self.exploit is not None:
+            try:
+                self.exploit.observe_decision(memory["opp"], obs, self.tree, action)
+            except Exception:
+                st["exceptions"] += 1
+        dt = time.perf_counter() - t0
+        st["decisions"] += 1
+        st["time"] += dt
+        st["max_time"] = max(st["max_time"], dt)
+        st["charged_est"] = round(self.charged_estimate(memory, st), 3)
+        st["level"] = memory["_level"]
+        return action
+
+    # ------------------------------------------------------------- internals
+    def charged_estimate(self, memory, st) -> float:
+        """Estimate of the time bank the judge has charged us so far: CPU time
+        of this whole process (our code + FastAPI/JSON handling) since the
+        half started, minus the free first millisecond of every request."""
+        cpu = time.process_time() - memory["_cpu0"]
+        return max(st["time"], cpu - GRACE * st["decisions"])
+
+    def _scale(self, memory, st) -> float:
+        """Feedback time manager. Once per hand, project the charged time at
+        the end of the half from the measured cost per hand; step the feature
+        sample scale down if the projection exceeds TARGET, up if it is well
+        below. Returns 0 (=> check/fold) only past HARD_LIMIT, i.e. when the
+        judge would soon force check/fold anyway."""
+        used = self.charged_estimate(memory, st)
+        if used > HARD_LIMIT:
+            return 0.0
+        levels = SCALES_C if core.BACKEND == "c" else SCALES_NP
+        if DETERMINISTIC:                  # tests / controlled experiments: no clock dependence
+            return levels[0]
+        target = TARGET if core.BACKEND == "c" else TARGET_NP
+        hand = max(memory.get("hand", 0), 0)
+        if hand != memory.get("_scale_hand"):
+            memory["_scale_hand"] = hand
+            done = hand + 1
+            if done >= 20:
+                projected = used + used / done * max(0, memory["num_hands"] - done)
+                lvl = memory["_level"]
+                if projected > target and lvl < len(levels) - 1:
+                    memory["_level"] = lvl + 1
+                elif projected < 0.6 * target and lvl > 0:
+                    memory["_level"] = lvl - 1
+        return levels[memory["_level"]]
+
+    def _bucket(self, obs, memory, st):
+        street = int(obs.street)
+        key = (obs.hand_index, street)
+        cache = memory["cache"]
+        if key in cache:
+            st["cache_hits"] += 1
+            return cache[key]
+        if obs.hand_index != memory.get("hand"):
+            cache.clear()
+            memory["hand"] = obs.hand_index
+        scale = 1.0 if street == 0 else self._scale(memory, st)
+        if scale <= 0.0:
+            return None
+        e, e2 = A.features(obs.hole_cards, obs.board, scale)
+        st["feature_calls"] += 1
+        b = A.bucket_from_features(street, e, e2, self.abs)
+        cache[key] = (e, e2, b)
+        return cache[key]
+
+    def _decide(self, obs, memory, st) -> Action:
+        legal = obs.legal_actions
+        if len(legal) == 1:
+            return legal[0]
+        rng = memory["rng"]
+        feat = self._bucket(obs, memory, st)
+        if feat is None:                          # out of time budget: cheapest sane action
+            st["fallbacks"] += 1
+            return Action.CHECK_CALL if obs.to_call == 0 else Action.FOLD
+        e, e2, bucket = feat
+        if self.mode == "heuristic" or self.bp is None:
+            return heuristic_action(obs, rng, hs=e)
+        node = self.tree.node_from_history([int(h.action) for h in obs.action_history])
+        t = self.tree
+        my_pos = 0 if obs.is_button else 1
+        if t.player[node] != my_pos or t.pot[node] != obs.pot or t.street[node] != int(obs.street):
+            st["fallbacks"] += 1
+            return heuristic_action(obs, rng, hs=e)
+        street = int(obs.street)
+        probs = self.bp.probs(street, int(t.local[node]), bucket)
+        if self.exploit is not None:
+            probs = self.exploit.adjust(probs, obs, node, e, e2, bucket, memory, t, self)
+        probs = [probs[a] if Action(a) in legal else 0.0 for a in range(4)]
+        tot = sum(probs)
+        if tot <= 0:
+            st["fallbacks"] += 1
+            return heuristic_action(obs, rng, hs=e)
+        u = rng.random() * tot
+        acc = 0.0
+        for a in range(4):
+            acc += probs[a]
+            if probs[a] > 0 and u < acc:
+                return Action(a)
+        return Action.CHECK_CALL

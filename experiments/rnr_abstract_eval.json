@@ -1,0 +1,34 @@
+{
+ "blueprint": {
+  "ev_counter_bb": 0.0,
+  "ev_blueprint_bb": 0.0
+ },
+ "station": {
+  "ev_counter_bb": 7.875,
+  "ev_blueprint_bb": 1.409
+ },
+ "loose_passive": {
+  "ev_counter_bb": 0.073,
+  "ev_blueprint_bb": 0.041
+ },
+ "overfolder": {
+  "ev_counter_bb": 0.115,
+  "ev_blueprint_bb": 0.077
+ },
+ "maniac": {
+  "ev_counter_bb": 0.889,
+  "ev_blueprint_bb": 0.305
+ },
+ "always_pot": {
+  "ev_counter_bb": 4.532,
+  "ev_blueprint_bb": 1.874
+ },
+ "always_half": {
+  "ev_counter_bb": 7.486,
+  "ev_blueprint_bb": 2.398
+ },
+ "random": {
+  "ev_counter_bb": 7.878,
+  "ev_blueprint_bb": 1.823
+ }
+}
