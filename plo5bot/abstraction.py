@@ -22,6 +22,7 @@ sample sizes so the noise in bucket assignment is the same in both.
 from __future__ import annotations
 
 import os
+from bisect import bisect_right
 from math import comb
 
 import numpy as np
@@ -104,16 +105,31 @@ def features(hole, board, scale: float = 1.0) -> tuple[float, float]:
     return e, e2
 
 
+_EDGE_LISTS: dict = {}
+
+
+def _edge_lists(a: dict) -> dict:
+    """The bin edges as plain Python float lists (exact copies of the float64
+    arrays): bisect on a short list is ~10x cheaper than np.searchsorted."""
+    lists = _EDGE_LISTS.get(id(a))
+    if lists is None:
+        lists = {k: (v.tolist() if v.ndim == 1 else [row.tolist() for row in v])
+                 for k, v in a.items() if k.endswith("_edges")}
+        _EDGE_LISTS[id(a)] = lists
+    return lists
+
+
 def bucket_from_features(street: int, e: float, e2: float, abs_: dict | None = None) -> int:
-    a = abs_ or load_abstraction()
+    # bisect_right(list, x) == np.searchsorted(array, x, side="right")
+    a = _edge_lists(abs_ or load_abstraction())
     if street == 0:
-        return int(np.searchsorted(a["pre_edges"], e, side="right"))
+        return bisect_right(a["pre_edges"], e)
     if street == 3:
-        return int(np.searchsorted(a["riv_edges"], e, side="right"))
+        return bisect_right(a["riv_edges"], e)
     key = "flop" if street == 1 else "turn"
-    eb = int(np.searchsorted(a[f"{key}_eq_edges"], e, side="right"))
+    eb = bisect_right(a[f"{key}_eq_edges"], e)
     var = e2 - e * e
-    pb = int(np.searchsorted(a[f"{key}_pot_edges"][eb], var, side="right"))
+    pb = bisect_right(a[f"{key}_pot_edges"][eb], var)
     return eb * NB_POT + pb
 
 

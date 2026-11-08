@@ -46,7 +46,7 @@ from plo5bot.player import Player  # noqa: E402
 PLAYER = Player()
 
 # rename as your team/bot's name
-PARTICIPANT = "CsaBest"
+PARTICIPANT = "aurora-poker-bot"
 AGENT_NAME = "PLO5-MCCFR"
 
 

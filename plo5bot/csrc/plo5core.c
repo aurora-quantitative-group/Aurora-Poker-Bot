@@ -56,7 +56,7 @@ static inline int rng_below(rng_t *r, int n) {
 
 /* -------------------------------------------------- precomputed pieces ---- */
 typedef struct { int key[10]; int suit[10]; } hole_t;   /* suit = -1 if offsuit */
-typedef struct { int key[10]; int suit[10]; } board_t;  /* suit = -1 if not mono */
+typedef struct { int key[10]; int suit[10]; int nmono; int mono[10]; } board_t;  /* suit = -1 if not mono; mono = indices of one-suit triples */
 
 static inline void prep_hole(const int *h, hole_t *o) {
     for (int i = 0; i < 10; i++) {
@@ -71,15 +71,30 @@ static inline void prep_board(const int *bd, board_t *o) {
         o->key[j] = POW5[a >> 2] + POW5[b >> 2] + POW5[c >> 2];
         o->suit[j] = ((a & 3) == (b & 3) && (b & 3) == (c & 3)) ? (a & 3) : -1;
     }
+    o->nmono = 0;
+    for (int j = 0; j < 10; j++) if (o->suit[j] >= 0) o->mono[o->nmono++] = j;
 }
+/* Same result as taking FL for flush combinations and NF otherwise: for a
+ * flush combination FL[k] >= NF[k] (a flush or straight flush outranks the
+ * straight / high card of the same ranks), so max(all NF, flush-combo FL)
+ * equals the max over combinations. The hot loop is branch-free and flush
+ * lookups happen only for boards with a one-suit triple. */
 static inline int eval_prepped(const hole_t *h, const board_t *b) {
     int best = 0;
     for (int i = 0; i < 10; i++) {
-        const int hk = h->key[i], hs = h->suit[i];
+        const int hk = h->key[i];
         for (int j = 0; j < 10; j++) {
-            int k = hk + b->key[j];
-            int v = (hs >= 0 && hs == b->suit[j]) ? FL[k] : NF[k];
-            if (v > best) best = v;
+            int v = NF[hk + b->key[j]];
+            best = v > best ? v : best;
+        }
+    }
+    for (int m = 0; m < b->nmono; m++) {
+        const int j = b->mono[m], s = b->suit[j];
+        for (int i = 0; i < 10; i++) {
+            if (h->suit[i] == s) {
+                int v = FL[h->key[i] + b->key[j]];
+                best = v > best ? v : best;
+            }
         }
     }
     return best;
